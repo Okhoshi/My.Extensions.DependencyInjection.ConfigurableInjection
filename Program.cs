@@ -20,6 +20,7 @@ namespace My.Extensions.DependencyInjection.ConfigurableInjection
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseWebRoot("./App/wwwroot")
                 .Build();
     }
 }
