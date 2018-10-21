@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace My.Extensions.DependencyInjection.ConfigurableInjection
+namespace MemoryInjectionSample
 {
     public class Program
     {
@@ -20,7 +20,6 @@ namespace My.Extensions.DependencyInjection.ConfigurableInjection
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseWebRoot("./App/wwwroot")
                 .Build();
     }
 }

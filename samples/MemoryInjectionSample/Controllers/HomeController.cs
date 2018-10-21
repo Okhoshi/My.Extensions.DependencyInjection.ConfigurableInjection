@@ -4,11 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using My.Extensions.DependencyInjection.ConfigurableInjection.Implementations;
-using My.Extensions.DependencyInjection.ConfigurableInjection.Interfaces;
-using My.Extensions.DependencyInjection.ConfigurableInjection.Models;
+using MemoryInjectionSample.Models;
 
-namespace My.Extensions.DependencyInjection.ConfigurableInjection.Controllers
+namespace MemoryInjectionSample.Controllers
 {
     public class HomeController : Controller
     {

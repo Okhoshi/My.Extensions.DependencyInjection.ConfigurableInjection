@@ -1,14 +1,14 @@
 using My.Extensions.DependencyInjection.ConfigurableInjection.Annotations;
 using My.Extensions.DependencyInjection.ConfigurableInjection.Interfaces;
 
-namespace My.Extensions.DependencyInjection.ConfigurableInjection.Implementations
+namespace MemoryInjectionSample.Models
 {
-    [InjectionTarget("SingleDummy")]
-    public class SingleDummy : IDummy
+    [InjectionTarget("DoubleDummy")]
+    public class DoubleDummy : IDummy
     {
         public string GetDummy()
         {
-            return nameof(SingleDummy);
+            return nameof(DoubleDummy);
         }
     }
 }

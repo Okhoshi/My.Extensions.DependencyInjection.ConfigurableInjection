@@ -13,7 +13,7 @@ namespace My.Extensions.DependencyInjection.ConfigurableInjection.Implementation
 {
     using TConfigurationKey = System.String;
 
-    public class TargetInstanceFactory<TConfiguration> : ITargetInstanceFactory
+    internal class TargetInstanceFactory<TConfiguration> : ITargetInstanceFactory
         where TConfiguration : ConfigurationBase<TConfigurationKey>
     {
         private readonly ILogger<TargetInstanceFactory<TConfiguration>> _Logger;

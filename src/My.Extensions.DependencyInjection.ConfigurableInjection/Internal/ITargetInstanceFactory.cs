@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace My.Extensions.DependencyInjection.ConfigurableInjection
+namespace My.Extensions.DependencyInjection.ConfigurableInjection.Internal
 {
-    public interface ITargetInstanceFactory
+    internal interface ITargetInstanceFactory
     {
         object GetInstanceFor(Type targetInterface);
 

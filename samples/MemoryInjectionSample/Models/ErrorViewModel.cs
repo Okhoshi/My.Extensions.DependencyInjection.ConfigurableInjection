@@ -1,6 +1,6 @@
 using System;
 
-namespace My.Extensions.DependencyInjection.ConfigurableInjection.Models
+namespace MemoryInjectionSample.Models
 {
     public class ErrorViewModel
     {

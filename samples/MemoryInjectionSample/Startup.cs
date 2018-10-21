@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using My.Extensions.DependencyInjection.ConfigurableInjection.Implementations;
 
-namespace My.Extensions.DependencyInjection.ConfigurableInjection
+namespace MemoryInjectionSample
 {
     public class Startup
     {
@@ -30,14 +25,8 @@ namespace My.Extensions.DependencyInjection.ConfigurableInjection
                 o.UseConfigurationProvider<string, MemoryServiceConfigurationProvider.MemoryConfig, MemoryServiceConfigurationProvider>();
                 o.AddAssemblyFromType<Startup>();
             });
-
+            
             services.AddMvc();
-            services.Configure<RazorViewEngineOptions>(o => {
-                foreach (var item in o.ViewLocationFormats.Select(x => "/App" + x).ToList())
-                {
-                    o.ViewLocationFormats.Add(item);
-                }
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
