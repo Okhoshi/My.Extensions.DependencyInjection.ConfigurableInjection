@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using My.Extensions.DependencyInjection.ConfigurableInjection.Implementations;
+using My.Extensions.DependencyInjection.ConfigurableInjection.Interfaces;
 using My.Extensions.DependencyInjection.ConfigurableInjection.Models;
 
 namespace My.Extensions.DependencyInjection.ConfigurableInjection.Controllers
@@ -15,10 +17,19 @@ namespace My.Extensions.DependencyInjection.ConfigurableInjection.Controllers
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult About([FromServices]IServiceProvider provider,[FromServices]IServiceConfigurationProvider<string, MemoryServiceConfigurationProvider.MemoryConfig> settings, string @in, string @out)
         {
-            ViewData["Message"] = "Your application description page.";
+            (settings as MemoryServiceConfigurationProvider).SetInAndOut(@in, @out);
 
+            try
+            {
+                var dummy = provider.GetService(typeof(IDummy)) as IDummy;
+                ViewData["Message"] = dummy.GetDummy();
+            }
+            catch (Exception e)
+            {
+                ViewData["Message"] = e.Message;
+            }
             return View();
         }
 
