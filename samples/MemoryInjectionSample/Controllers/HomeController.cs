@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MemoryInjectionSample.Models;
+using My.Extensions.DependencyInjection.ConfigurableInjection;
+using MemoryInjectionSample.Interfaces;
 
 namespace MemoryInjectionSample.Controllers
 {

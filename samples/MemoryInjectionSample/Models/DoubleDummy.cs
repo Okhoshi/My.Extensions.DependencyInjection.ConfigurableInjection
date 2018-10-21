@@ -1,5 +1,5 @@
+using MemoryInjectionSample.Interfaces;
 using My.Extensions.DependencyInjection.ConfigurableInjection.Annotations;
-using My.Extensions.DependencyInjection.ConfigurableInjection.Interfaces;
 
 namespace MemoryInjectionSample.Models
 {

@@ -3,7 +3,7 @@
 namespace My.Extensions.DependencyInjection.ConfigurableInjection.Annotations
 {
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public sealed class InjectionTargetAttribute : System.Attribute
+    public class InjectionTargetAttribute : System.Attribute
     {
         private readonly string identifier;
         
@@ -17,9 +17,5 @@ namespace My.Extensions.DependencyInjection.ConfigurableInjection.Annotations
         {
             get { return identifier; }
         }
-        
-        public string Name { get; set; }
-
-        public string Description { get; set; }
     }
 }

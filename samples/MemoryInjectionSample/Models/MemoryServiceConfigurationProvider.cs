@@ -1,3 +1,5 @@
+using My.Extensions.DependencyInjection.ConfigurableInjection;
+
 namespace MemoryInjectionSample.Models
 {
     public class MemoryServiceConfigurationProvider : IServiceConfigurationProvider<string, MemoryServiceConfigurationProvider.MemoryConfig>

@@ -29,11 +29,12 @@ namespace My.Extensions.DependencyInjection.ConfigurableInjection.Implementation
             _HttpContextAccessor = httpContextAccessor;
         }
 
-        public object GetInstanceFor(Type targetInterface)
+        public object GetInstanceFor(Type target)
         {
             var scopeServiceProvider = _HttpContextAccessor.HttpContext.RequestServices;
 
-            var targetAttribute = targetInterface.GetTypeInfo().GetCustomAttribute<InjectionTargetAttribute>();
+            var targetInterface = target.GetTypeInfo();
+            var targetAttribute = targetInterface.GetCustomAttribute<InjectionTargetAttribute>();
             if (targetAttribute == null)
             {
                 _Logger.LogError($"{nameof(targetInterface)} ({{targetInterface}}) is not annotated with {nameof(InjectionTargetAttribute)}.", targetInterface);
@@ -58,7 +59,6 @@ namespace My.Extensions.DependencyInjection.ConfigurableInjection.Implementation
             
             var candidates = _Options.Assemblies
                 .SelectMany(a => a.DefinedTypes)
-                .Select(t => t.GetTypeInfo())
                 .Where(t => t.IsClass)
                 .Where(t => t.GetCustomAttribute<InjectionTargetAttribute>() != null)
                 .Where(t => t.GetCustomAttribute<InjectionTargetAttribute>().Identifier == classToLoad.ImplementationKey)
@@ -82,7 +82,7 @@ namespace My.Extensions.DependencyInjection.ConfigurableInjection.Implementation
                 throw new InvalidOperationException($"The instance referenced by {classToLoad.ImplementationKey} found does not implement the interface {targetInterface} ({targetAttribute.Identifier})");
             }
             
-            return scopeServiceProvider.GetRequiredService(candidateInstance);
+            return scopeServiceProvider.GetRequiredService(candidateInstance.AsType());
         }
 
         public ITarget GetInstanceFor<ITarget>()

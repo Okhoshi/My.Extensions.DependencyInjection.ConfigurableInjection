@@ -1,9 +1,9 @@
 using System;
-using My.Extensions.DependencyInjection.ConfigurableInjection.Annotations;
+using MemoryInjectionSample.Annotations;
 
-namespace My.Extensions.DependencyInjection.ConfigurableInjection.Interfaces
+namespace MemoryInjectionSample.Interfaces
 {
-    [InjectionTarget("Dunny")]
+    [NamedInjectionTarget("Dunny", Name = "IDunny")]
     public interface IDunny
     {
         string GetDunny();

@@ -1,8 +1,9 @@
 using System;
+using MemoryInjectionSample.Annotations;
 
 namespace MemoryInjectionSample.Interfaces
 {
-    [InjectionTarget("Dummy")]
+    [NamedInjectionTarget("Dummy", Name = "IDummy")]
     public interface IDummy
     {
         string GetDummy();

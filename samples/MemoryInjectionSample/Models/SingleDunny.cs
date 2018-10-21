@@ -1,3 +1,6 @@
+using MemoryInjectionSample.Interfaces;
+using My.Extensions.DependencyInjection.ConfigurableInjection.Annotations;
+
 namespace MemoryInjectionSample.Models
 {
     [InjectionTarget("SingleDunny")]
