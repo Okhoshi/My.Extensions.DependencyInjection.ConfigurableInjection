@@ -12,8 +12,6 @@ steps:
 - script: dotnet restore
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
-- task: NuGetCommand@2
-  inputs:
-    command: pack
-    packagesToPack: '**/My.Extensions.DependencyInjection.ConfigurableInjection.csproj'
+- script: dotnet pack --no-build --configuration $(buildConfiguration) -o $(Build.ArtifactStagingDirectory) src/**/*.csproj
+  displayName: 'dotnet pack'
 - task: PublishBuildArtifacts@1
