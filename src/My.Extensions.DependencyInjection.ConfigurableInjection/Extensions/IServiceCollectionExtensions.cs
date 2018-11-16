@@ -37,7 +37,17 @@ namespace Microsoft.Extensions.DependencyInjection
                 configuration._ServiceConfigurationProviderInterface,
                 configuration._ServiceConfigurationProviderImpl);
 
-            var types = configuration._LoadedAssemblies
+            (var interfaces, var classes) = ExtractTypesFromAssemblies(configuration._LoadedAssemblies.ToArray());
+
+            RegisterInterfaces(services, configuration, interfaces, classes.Select(c => c.ifc).Distinct());
+            RegisterClasses(services, configuration, classes.Select(c => c.cls).Distinct());
+
+            return services;
+        }
+
+        private static (TypeInfo[], (TypeInfo cls, TypeInfo ifc)[]) ExtractTypesFromAssemblies(params Assembly[] assemblies)
+        {
+            var types = assemblies
                 .DefaultIfEmpty(Assembly.GetEntryAssembly())
                 .SelectMany(a => a.ExportedTypes)
                 .Select(t => t.GetTypeInfo())
@@ -50,16 +60,21 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new InvalidProgramException($"No class or interface with {nameof(InjectionTargetAttribute)} found");
             }
 
-            var interfaces = types.Where(t => t.IsInterface);
+            var interfaces = types.Where(t => t.IsInterface).ToArray();
             var classes = types.Where(t => t.IsClass)
                 .SelectMany(c => c.ImplementedInterfaces
                     .Select(i => i.GetTypeInfo())
                     .Where(i => i.GetCustomAttribute<InjectionTargetAttribute>() != null)
-                    .Select(i => new {c, i}));
+                    .Select(i => (cls: c, ifc: i)))
+                .ToArray();
+            
+            return (interfaces, classes);
+        }
 
+        private static void RegisterInterfaces(IServiceCollection services, InjectionConfiguration configuration, IEnumerable<TypeInfo> interfaces, IEnumerable<TypeInfo> implementedInterfaces)
+        {
             if (!configuration._IgnoreInterfacesWithoutClass)
             {
-                var implementedInterfaces = classes.Select(c => c.i).Distinct();
                 var notImplementedInterfaces = interfaces.Except(implementedInterfaces).ToList();
                 if (notImplementedInterfaces.Any())
                 {
@@ -75,11 +90,13 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 services.AddScoped(i, sp => sp.GetRequiredService<ITargetInstanceFactory>().GetInstanceFor(i));
             }
+        }
 
-
+        private static void RegisterClasses(IServiceCollection services, InjectionConfiguration configuration, IEnumerable<TypeInfo> classes)
+        {
             if (configuration._ThrowForClassesWithoutInterface)
             {
-                var notInterfacedImplementations = classes.Select(c => c.c).Distinct()
+                var notInterfacedImplementations = classes
                     .Where(c => c.ImplementedInterfaces.All(i => i.GetTypeInfo().GetCustomAttribute<InjectionTargetAttribute>() == null)).ToList();
                 if (notInterfacedImplementations.Any())
                 {
@@ -89,10 +106,8 @@ namespace Microsoft.Extensions.DependencyInjection
 
             foreach (var c in classes)
             {
-                services.AddScoped(c.c.AsType());
+                services.AddScoped(c.AsType());
             }
-
-            return services;
         }
     }
 
