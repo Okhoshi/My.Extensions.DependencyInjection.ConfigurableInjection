@@ -19,7 +19,7 @@ namespace MemoryInjectionSample.Models
             {
                 return new MemoryConfig {
                     InterfaceKey = _In,
-                    ImplementationKey = _Out
+                    ImplementationKeys = _Out.Split(",")
                 };
             }
             else

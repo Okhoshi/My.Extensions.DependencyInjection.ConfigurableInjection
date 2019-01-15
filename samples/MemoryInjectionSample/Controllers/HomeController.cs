@@ -17,14 +17,20 @@ namespace MemoryInjectionSample.Controllers
             return View();
         }
 
-        public IActionResult About([FromServices]IServiceProvider provider,[FromServices]IServiceConfigurationProvider<string, MemoryServiceConfigurationProvider.MemoryConfig> settings, string @in, string @out)
+        public IActionResult About([FromServices]IServiceProvider provider,[FromServices]IServiceConfigurationProvider<string, MemoryServiceConfigurationProvider.MemoryConfig> settings, string @in, string @out, bool asEnum = false)
         {
             (settings as MemoryServiceConfigurationProvider).SetInAndOut(@in, @out);
 
             try
             {
-                var dummy = provider.GetService(typeof(IDummy)) as IDummy;
-                ViewData["Message"] = dummy.GetDummy();
+                if (asEnum)
+                {
+                    var dummy = provider.GetService(typeof(IEnumerable<IDummy>)) as IEnumerable<IDummy>;
+                    ViewData["Message"] = string.Join(" / ", dummy.Select(t => t.GetDummy()));
+                } else {
+                    var dummy = provider.GetService(typeof(IDummy)) as IDummy;
+                    ViewData["Message"] = dummy.GetDummy();
+                }
             }
             catch (Exception e)
             {

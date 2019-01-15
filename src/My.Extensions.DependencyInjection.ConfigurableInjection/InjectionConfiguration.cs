@@ -147,6 +147,14 @@ namespace Microsoft.Extensions.DependencyInjection
                         _ServiceLifetime
                     )
                 );
+                var iEnumI = typeof(IEnumerable<>).MakeGenericType(i);
+                services.Add(
+                    new ServiceDescriptor(
+                        iEnumI,
+                        sp => sp.GetRequiredService<ITargetInstanceFactory>().GetInstanceFor(iEnumI),
+                        _ServiceLifetime
+                    )
+                );
             }
         }
 
